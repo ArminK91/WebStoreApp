@@ -3,37 +3,24 @@ using WebStoreAPP.Common.ViewModels;
 
 namespace WebStoreAPP.Common.Mappers
 {
-    public static class CategoryMapper
+    public static partial class Mappers
     {
-          public static Category ToProductModel(this CategoryViewModel categoryViewModel)
+          public static Category ToModel(this CategoryViewModel categoryViewModel)
         {
             return new Category()
             {
-                // Barcode = productViewModel.Barcode,
-                // CategoryId = productViewModel.CategoryId,
-                // Description = productViewModel.Description,
-                // Discounted = productViewModel.Discounted,
+                
                 Id = categoryViewModel.Id,
-                //Name = productViewModel.Name,
-                // UnitPrice = productViewModel.UnitPrice,
-                // UnitsInStock = productViewModel.UnitsInStock,
-                // UnitsOnOrder = productViewModel.UnitsOnOrder
+                Name = categoryViewModel.Name
             };
         }
 
-        public static CategoryViewModel ToProductViewModel(this Category category)
+        public static CategoryViewModel ToViewModel(this Category category)
         {
             return new CategoryViewModel()
             {
-                // Barcode = product.Barcode,
-                // CategoryId = product.CategoryId,
-                // Description = product.Description,
-                // Discounted = product.Discounted,
                 Id = category.Id,
-                // Name = product.Name,
-                // UnitPrice = product.UnitPrice,
-                // UnitsInStock = product.UnitsInStock,
-                // UnitsOnOrder = product.UnitsOnOrder
+                Name = category.Name
             };
         }
     }

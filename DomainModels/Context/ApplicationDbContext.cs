@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Reflection.Emit;
 
 namespace DomainModels.Context
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-         private IConfigurationRoot _configuration;
+         private IConfigurationRoot _configuration { get; }  
 
         public ApplicationDbContext(IConfiguration configuration, DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -19,13 +20,16 @@ namespace DomainModels.Context
         {
             base.OnConfiguring(optionsBuilder);
             //ConnectionStrings:DefaultConnection
-            optionsBuilder.UseSqlServer(_configuration["ConnectionStrings:DefaultConnection"]);
+            optionsBuilder.UseSqlServer(_configuration["ConnectionStrings:DefaultConnection"], b => b.MigrationsAssembly("DomainModels"));
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
           
+
+
+
             builder.Entity<IdentityRole>().ToTable("Roles", "dbo");
             builder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims", "dbo");
             builder.Entity<IdentityUserClaim<string>>().ToTable("UserClaims", "dbo");
@@ -33,10 +37,30 @@ namespace DomainModels.Context
             builder.Entity<IdentityUserRole<string>>().ToTable("UserRoles", "dbo");
             builder.Entity<ApplicationUser>().ToTable("ApplicationUsers", "dbo");
             builder.Entity<Product>().ToTable("Products", "dbo");
+            builder.Entity<Customer>().ToTable("Customers", "dbo");
+            builder.Entity<Image>().ToTable("Images", "dbo");
+            builder.Entity<ProductImages>().ToTable("ProductsImages", "dbo");
+
+
+
+            builder.Entity<ProductImages>()
+        .HasKey(bc => new { bc.ProductId, bc.ImageId });
+
+            builder.Entity<ProductImages>()
+                .HasOne(bc => bc.Product)
+                .WithMany(b => b.ProductImages)
+                .HasForeignKey(bc => bc.ImageId);
+
+            builder.Entity<ProductImages>()
+                .HasOne(bc => bc.Image)
+                .WithMany(c => c.ProductImages)
+                .HasForeignKey(bc => bc.ProductId);
         }
 
-
+        public DbSet<Customer> Customers { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Image> Images { get; set; }
+        public DbSet<ProductImages> ProductsImages { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
     }
 }
