@@ -51,8 +51,8 @@ namespace WebStoreAPP.BLL.IdentityService
             if (string.IsNullOrWhiteSpace(password))
                 throw new Exception("Password is required");
 
-            //if (_ctx.Users.Any(x => x.Username == user.Username))
-            //    throw new Exception("Username " + user.Username + " is already taken");
+            if (_ctx.Users.Any(x => x.Username == user.Username))
+                throw new Exception("Username " + user.Username + " is already taken");
 
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(password, out passwordHash, out passwordSalt);

@@ -7,7 +7,7 @@ using System.Reflection.Emit;
 
 namespace DomainModels.Context
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : DbContext/*: IdentityDbContext<ApplicationUser>*/
     {
          private IConfigurationRoot _configuration { get; }  
 
@@ -30,12 +30,12 @@ namespace DomainModels.Context
 
 
 
-            builder.Entity<IdentityRole>().ToTable("Roles", "dbo");
-            builder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims", "dbo");
-            builder.Entity<IdentityUserClaim<string>>().ToTable("UserClaims", "dbo");
-            builder.Entity<IdentityUserLogin<string>>().ToTable("UserLogins", "dbo");
-            builder.Entity<IdentityUserRole<string>>().ToTable("UserRoles", "dbo");
-            builder.Entity<ApplicationUser>().ToTable("ApplicationUsers", "dbo");
+            // builder.Entity<IdentityRole>().ToTable("Roles", "dbo");
+            // builder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims", "dbo");
+            // builder.Entity<IdentityUserClaim<string>>().ToTable("UserClaims", "dbo");
+            // builder.Entity<IdentityUserLogin<string>>().ToTable("UserLogins", "dbo");
+            // builder.Entity<IdentityUserRole<string>>().ToTable("UserRoles", "dbo");
+            builder.Entity<ApplicationUser>().ToTable("Users", "dbo");
             builder.Entity<Product>().ToTable("Products", "dbo");
             builder.Entity<Customer>().ToTable("Customers", "dbo");
             builder.Entity<Image>().ToTable("Images", "dbo");

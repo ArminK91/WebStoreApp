@@ -22,7 +22,7 @@ namespace DomainModels.DbModels
         public int PackageOfEquipment { get; set; }
         public bool Status { get; set; }
         public int CategoryId { get; set; }
-        public string UserId { get; set; }
+        public int UserId { get; set; }
 
         public ICollection<ProductImages> ProductImages { get; set; }
         [ForeignKey("UserId")]

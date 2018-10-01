@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using DomainModels.Context;
 using DomainModels.DbModels;
 using DomainModels.Other;
@@ -40,35 +41,18 @@ namespace WebStoreApp.API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            // services.AddSingleton(Configuration);
-
-            // Add framework services.
-            // services.AddDbContext<AdvOpDbContext>();
-             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            
-            services.AddMvc().AddJsonOptions(opt => {
-                opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            }).AddXmlSerializerFormatters();
-
-            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-            {
-                options.User.RequireUniqueEmail = false;
-            });
-            //.AddEntityFrameworkStores<ServiceProviderServiceExtensions..Database.EFProvider.DataContext>()
-            //.AddDefaultTokenProviders();
-
             services.AddCors();
 
-            services.AddTransient<IIdentity, IdentityService>();
-             services.AddTransient<IProduct, ProductService>();
-             services.AddTransient<ICategory, CategoryService>();
-             services.AddTransient<IHelper, HelperService>();
-            services.AddTransient<IImage, ImageService>();
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddMvc();
+            services.AddAutoMapper();
 
+            // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
+            // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
             services.AddAuthentication(x =>
@@ -89,6 +73,11 @@ namespace WebStoreApp.API
                 };
             });
 
+            services.AddScoped<IIdentity, IdentityService>();
+            services.AddTransient<IProduct, ProductService>();
+            services.AddTransient<ICategory, CategoryService>();
+            services.AddTransient<IHelper, HelperService>();
+            services.AddTransient<IImage, ImageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -100,17 +89,12 @@ namespace WebStoreApp.API
             }
 
             app.UseCors(x => x
-              .AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials());
-            //        app.UseCors(builder =>
-            //builder.WithOrigins("http://localhost:4200/")
-            //       .AllowAnyHeader()
-            //);
-            app.UseIdentity();
+                 .AllowAnyOrigin()
+                 .AllowAnyMethod()
+                 .AllowAnyHeader()
+                 .AllowCredentials());
 
-           // app.UseAuthentication();
+            app.UseAuthentication();
 
             app.UseMvc();
         }

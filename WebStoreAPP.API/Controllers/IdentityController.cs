@@ -5,9 +5,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using DomainModels.DbModels;
 using DomainModels.Other;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -18,22 +20,20 @@ using WebStoreAPP.Common.ViewModels;
 
 namespace WebStoreAPP.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class IdentityController : Controller
     {
 
         private IIdentity _identityService { get; set; }
         private readonly AppSettings _appSettings;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private IMapper _mapper;
 
-        public IdentityController(IIdentity identityService, IOptions<AppSettings> appSettings, SignInManager<ApplicationUser> signInManager,
-           UserManager<ApplicationUser> userManager)
+        public IdentityController(IIdentity identityService, IMapper mapper, IOptions<AppSettings> appSettings)
         {
             _identityService = identityService;
+            _mapper = mapper;
             _appSettings = appSettings.Value;
-            _userManager = userManager;
-            _signInManager = signInManager;
         }
 
         [AllowAnonymous]
@@ -75,21 +75,24 @@ namespace WebStoreAPP.API.Controllers
         [Route("register")]
         public async Task<IActionResult> RegisterAsync([FromBody]UserViewModel userDto)
         {
-            // map dto to entity
-            var user = userDto.ToModel();
+            try
+            {
+                var user = _mapper.Map<ApplicationUser>(userDto);
 
-            //var rezult = await _userManager.CreateAsync(user, userDto.Password);
-            _identityService.Create(user, userDto.Password);
-            //if(rezult.Succeeded)
+                _identityService.Create(user, userDto.Password);
                 return Ok();
-           //return BadRequest(rezult.Errors);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var users = _identityService.GetAll();
-            var userDtos = users.Select(x => x.ToViewModel());
+            var userDtos = _mapper.Map<IList<UserViewModel>>(users);
             return Ok(userDtos);
         }
 
@@ -97,15 +100,15 @@ namespace WebStoreAPP.API.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var user = _identityService.GetById(id);
-            var userDto = user.ToViewModel();
+            var userDto = _mapper.Map<UserViewModel>(user);
             return Ok(userDto);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(string id, [FromBody]UserViewModel userDto)
+        public async Task<IActionResult> Update(int id, [FromBody]UserViewModel userDto)
         {
             // map dto to entity and set id
-            var user = userDto.ToModel();
+            var user = _mapper.Map<ApplicationUser>(userDto);
             user.Id = id;
 
             try
