@@ -27,7 +27,7 @@ namespace WebStoreAPP.API.Controllers
 
         private IIdentity _identityService { get; set; }
         private readonly AppSettings _appSettings;
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
 
         public IdentityController(IIdentity identityService, IMapper mapper, IOptions<AppSettings> appSettings)
         {
@@ -35,6 +35,8 @@ namespace WebStoreAPP.API.Controllers
             _mapper = mapper;
             _appSettings = appSettings.Value;
         }
+
+        
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
@@ -77,6 +79,7 @@ namespace WebStoreAPP.API.Controllers
         {
             try
             {
+
                 var user = _mapper.Map<ApplicationUser>(userDto);
 
                 _identityService.Create(user, userDto.Password);
