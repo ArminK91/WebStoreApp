@@ -21,13 +21,9 @@ namespace WebStoreAPP.BLL.HelperService
             _ctx = (ApplicationDbContext)serviceProvider.GetService(typeof(ApplicationDbContext));
         }
 
-
         public async Task<ApplicationUser> GetCurrentUserAsync()
         {
             return await _userManager.GetUserAsync(_httpContext.User);
         }
-
-
-
     }
 }

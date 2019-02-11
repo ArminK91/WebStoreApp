@@ -10,10 +10,10 @@ namespace WebStoreAPP.BLL.Interfaces
         Task<Product> GetProductById(int productId);
         Task<Product> SaveProduct(Product product, ApplicationUser user);
         Task<Product> UpdateProduct(Product product, ApplicationUser user);
-        Task<List<Product>> GetAllProductForUser(string userId);
+        Task<List<Product>> GetAllProductForUser(int userId);
         Task<List<Product>> SearchProducts(string term);
         Task<List<Product>> SearchProductsByCategory(int categoryId);
         Task<List<Product>> SerachProductsByPriceRange(decimal lowerBoundary, decimal higherBoundary);
-        Task<Product> DeleteProduct(int productId, ApplicationUser user);
+        Task DeleteProduct(int productId, ApplicationUser user);
     }
 }

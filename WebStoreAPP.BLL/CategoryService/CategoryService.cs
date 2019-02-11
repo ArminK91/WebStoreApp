@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DomainModels.Context;
 using DomainModels.DbModels;
+using Microsoft.EntityFrameworkCore;
 using WebStoreAPP.BLL.Interfaces;
 
 namespace WebStoreAPP.BLL.CategoryService
@@ -17,39 +19,64 @@ namespace WebStoreAPP.BLL.CategoryService
            _ctx = (ApplicationDbContext)serviceProvider.GetService(typeof(ApplicationDbContext));
        }
 
-        public Task<Category> DeleteCategory(int categoryId)
+        public async Task DeleteCategory(int categoryId)
         {
-            throw new NotImplementedException();
+            if (categoryId == null)
+                throw new Exception("Nemoguce obrisati kategoriju!");
+
+            var category = _ctx.Categories.Where(x => x.Id == categoryId).FirstOrDefault();
+
+            _ctx.Categories.Remove(category);
+            await _ctx.SaveChangesAsync();
         }
 
-        public IEnumerable<Category> GetAllCategories()
+        public async Task<IEnumerable<Category>> GetAllCategories()
         {
-            throw new System.NotImplementedException();
+            var allCategories = await _ctx.Categories.ToListAsync();
+
+            return allCategories;
         }
 
-        public Category GetCategoryById(int categoryId)
+        public async Task<Category> GetCategoryById(int categoryId)
         {
-            throw new System.NotImplementedException();
+            if (categoryId == null)
+                return null;
+            var category = await _ctx.Categories.Where(c => c.Id == categoryId).FirstOrDefaultAsync();
+
+            return category;
         }
 
-        public Task<Category> SaveCategory(Category model)
+        public async Task<Category> SaveCategory(Category model)
         {
-            throw new NotImplementedException();
+            if (model == null)
+                return null;
+
+            _ctx.Categories.Add(model);
+
+            await _ctx.SaveChangesAsync();
+
+            return model;
         }
 
-        public Task<Category> UpdateCategory(Category model)
+        public async Task<Category> UpdateCategory(Category model)
         {
-            throw new NotImplementedException();
+            if (model == null)
+                throw new Exception("Nemoguce uraditi edit kategorije!");
+
+            var category = _ctx.Categories.FirstOrDefault(x => x.Id == model.Id);
+
+            if(category == null)
+                throw new Exception("Ne postoji kategoruija!");
+
+            category.Name = model.Name;
+
+            _ctx.Entry(category).State = EntityState.Modified;
+
+            await _ctx.SaveChangesAsync();
+
+            return category;
         }
 
-        Task<IEnumerable<Category>> ICategory.GetAllCategories()
-        {
-            throw new NotImplementedException();
-        }
 
-        Task<Category> ICategory.GetCategoryById(int categoryId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

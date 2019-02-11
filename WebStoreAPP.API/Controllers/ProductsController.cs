@@ -119,9 +119,9 @@ namespace WebStoreAPP.API.Controllers
             {
                 var currentUser = await _helperService.GetCurrentUserAsync();
 
-                var deleted = await _productService.DeleteProduct(productId, currentUser);
+                await _productService.DeleteProduct(productId, currentUser);
 
-                return Ok(deleted.ToViewModel());
+                return Ok();
             }
             catch (Exception ex)
             {

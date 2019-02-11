@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DomainModels.Context;
 using DomainModels.DbModels;
+using Microsoft.EntityFrameworkCore;
 using WebStoreAPP.BLL.Interfaces;
 
 namespace WebStoreAPP.BLL.ProductService
@@ -16,29 +18,61 @@ namespace WebStoreAPP.BLL.ProductService
             _ctx = (ApplicationDbContext)serviceProvider.GetService(typeof(ApplicationDbContext));            
         }
 
-        public Task<Product> DeleteProduct(int productId, ApplicationUser user)
+        public async Task DeleteProduct(int productId, ApplicationUser user)
         {
-            throw new NotImplementedException();
+            if (productId == null || user == null)
+                throw new Exception("Nemoguce obrisati proizvod!");
+
+           var productForDelete = _ctx.Products.Where(x => x.Id == productId && x.UserId == user.Id).FirstOrDefault();
+
+            if (productForDelete == null)
+                throw new Exception("Proizvod nije pronadjen za brisanje1");
+
+            _ctx.Products.Remove(productForDelete);
+
+            await _ctx.SaveChangesAsync();
+
         }
 
-        public Task<List<Product>> GetAllProductForUser(string userId)
+        public async Task<List<Product>> GetAllProductForUser(int userId)
         {
-            throw new NotImplementedException();
+            if (userId == null)
+                throw new Exception("Nemoguce vratiti proizvode za ovog korisnika!");
+
+            var sviProizvodiKorisnika = await _ctx.Products.Where(x => x.UserId == userId).ToListAsync();
+
+            return sviProizvodiKorisnika;
         }
 
-        public IEnumerable<Product> GetAllProducts()
+        public async Task<IEnumerable<Product>> GetAllProducts()
         {
-            throw new System.NotImplementedException();
+            var sviProizvodi = await _ctx.Products.ToListAsync();
+
+            return sviProizvodi;
         }
 
-        public Task<Product> GetProductById(int productId)
+        public async Task<Product> GetProductById(int productId)
         {
-            throw new NotImplementedException();
+            if (productId == null)
+                throw new Exception("Nemoguce dohvatiti proizvod.");
+
+            var prozivod = await _ctx.Products.Where(x => x.Id == productId).FirstOrDefaultAsync();
+
+            return prozivod;
         }
 
-        public Task<Product> SaveProduct(Product product, ApplicationUser user)
+        public async Task<Product> SaveProduct(Product product, ApplicationUser user)
         {
-            throw new NotImplementedException();
+            if (product == null || user == null)
+                throw new Exception("Nista od spasavanja.");
+
+            product.UserId = user.Id;
+
+            _ctx.Products.Add(product);
+
+            await _ctx.SaveChangesAsync();
+
+            return product;
         }
 
         public Task<List<Product>> SearchProducts(string term)
@@ -56,14 +90,21 @@ namespace WebStoreAPP.BLL.ProductService
             throw new NotImplementedException();
         }
 
-        public Task<Product> UpdateProduct(Product product, ApplicationUser user)
+        public async Task<Product> UpdateProduct(Product product, ApplicationUser user)
         {
-            throw new NotImplementedException();
+            if (product == null || user == null)
+                throw new Exception("Nista od spasavanja.");
+
+            product.UserId = user.Id;
+
+            _ctx.Entry(product).State = EntityState.Modified;
+
+
+            await _ctx.SaveChangesAsync();
+
+            return product;
         }
 
-        Task<IEnumerable<Product>> IProduct.GetAllProducts()
-        {
-            throw new NotImplementedException();
-        }
+   
     }
 }

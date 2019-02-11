@@ -40,6 +40,8 @@ namespace DomainModels.Context
             builder.Entity<Customer>().ToTable("Customers", "dbo");
             builder.Entity<Image>().ToTable("Images", "dbo");
             builder.Entity<ProductImages>().ToTable("ProductsImages", "dbo");
+            builder.Entity<Category>().ToTable("Categories", "dbo");
+
 
 
 
@@ -62,5 +64,7 @@ namespace DomainModels.Context
         public DbSet<Image> Images { get; set; }
         public DbSet<ProductImages> ProductsImages { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
+        public DbSet<Category> Categories { get; set; }
+
     }
 }

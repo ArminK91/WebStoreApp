@@ -21,7 +21,7 @@ namespace WebStoreAPP.API.Controllers
 
         }
 
-         // GET api/values
+        // GET api/values
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
@@ -63,7 +63,8 @@ namespace WebStoreAPP.API.Controllers
             {
                 var category = await _categoryService.SaveCategory(model.ToModel());
 
-                return Ok(category.ToViewModel());            }
+                return Ok(category.ToViewModel());
+            }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -83,9 +84,9 @@ namespace WebStoreAPP.API.Controllers
         {
             try
             {
-                var category = await _categoryService.DeleteCategory(categoryId);
+                await _categoryService.DeleteCategory(categoryId);
 
-                return Ok(category.ToViewModel());
+                return Ok();
             }
             catch (Exception ex)
             {
