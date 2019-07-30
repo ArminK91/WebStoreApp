@@ -76,7 +76,5 @@ namespace WebStoreAPP.BLL.CategoryService
 
             return category;
         }
-
-
     }
 }

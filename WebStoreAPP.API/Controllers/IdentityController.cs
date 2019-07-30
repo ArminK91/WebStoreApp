@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,12 +14,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using WebStoreAPP.BLL.Interfaces;
-using WebStoreAPP.Common.Mappers;
 using WebStoreAPP.Common.ViewModels;
 
 namespace WebStoreAPP.API.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     [Route("api/[controller]")]
     public class IdentityController : Controller
     {
@@ -53,7 +51,7 @@ namespace WebStoreAPP.API.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim(ClaimTypes.Name, user.Username.ToString()),
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -72,7 +70,7 @@ namespace WebStoreAPP.API.Controllers
             });
         }
 
-        [AllowAnonymous]
+        
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> RegisterAsync([FromBody]UserViewModel userDto)

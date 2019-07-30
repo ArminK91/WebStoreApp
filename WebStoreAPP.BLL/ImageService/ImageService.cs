@@ -31,5 +31,27 @@ namespace WebStoreAPP.BLL.ImageService
         {
             throw new NotImplementedException();
         }
+
+        public async Task<Image> SnimiPodatkeOSlici(string path, int productId)
+        {
+            var image = new Image();
+
+            image.Path = path;
+
+            _ctx.Images.Add(image);
+
+            await _ctx.SaveChangesAsync();
+
+            image.ProductImages.Add(new ProductImages()
+            {
+                ImageId = image.Id,
+                ProductId = productId
+            }
+            );
+
+            await _ctx.SaveChangesAsync();
+
+            return image;
+        }
     }
 }

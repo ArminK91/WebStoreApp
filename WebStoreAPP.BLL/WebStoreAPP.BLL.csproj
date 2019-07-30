@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DomainModels\DomainModels.csproj" />
+    <ProjectReference Include="..\WebStoreAPP.Common\WebStoreAPP.Common.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

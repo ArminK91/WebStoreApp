@@ -535,7 +535,7 @@
           }
         }
       },
-      "NETStandard.Library/2.0.1": {
+      "NETStandard.Library/2.0.3": {
         "type": "package",
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.0"
@@ -1079,6 +1079,19 @@
         "runtime": {
           "bin/placeholder/DomainModels.dll": {}
         }
+      },
+      "WebStoreAPP.Common/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "DomainModels": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/WebStoreAPP.Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/WebStoreAPP.Common.dll": {}
+        }
       }
     }
   },
@@ -1350,6 +1363,7 @@
       "type": "package",
       "path": "microsoft.entityframeworkcore.design/2.0.2",
       "files": [
+        ".nupkg.metadata",
         "lib/net461/Microsoft.EntityFrameworkCore.Design.dll",
         "lib/net461/Microsoft.EntityFrameworkCore.Design.xml",
         "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Design.dll",
@@ -1620,14 +1634,14 @@
         "version.txt"
       ]
     },
-    "NETStandard.Library/2.0.1": {
-      "sha512": "oA6nwv9MhEKYvLpjZ0ggSpb1g4CQViDVQjLUcDWg598jtvJbpfeP2reqwI1GLW2TbxC/Ml7xL6BBR1HmKPXlTg==",
+    "NETStandard.Library/2.0.3": {
+      "sha512": "st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
       "type": "package",
-      "path": "netstandard.library/2.0.1",
+      "path": "netstandard.library/2.0.3",
       "files": [
+        ".nupkg.metadata",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
-        "build/NETStandard.Library.targets",
         "build/netstandard2.0/NETStandard.Library.targets",
         "build/netstandard2.0/ref/Microsoft.Win32.Primitives.dll",
         "build/netstandard2.0/ref/System.AppContext.dll",
@@ -1744,7 +1758,7 @@
         "build/netstandard2.0/ref/netstandard.dll",
         "build/netstandard2.0/ref/netstandard.xml",
         "lib/netstandard1.0/_._",
-        "netstandard.library.2.0.1.nupkg.sha512",
+        "netstandard.library.2.0.3.nupkg.sha512",
         "netstandard.library.nuspec"
       ]
     },
@@ -3642,12 +3656,18 @@
       "type": "project",
       "path": "../DomainModels/DomainModels.csproj",
       "msbuildProject": "../DomainModels/DomainModels.csproj"
+    },
+    "WebStoreAPP.Common/1.0.0": {
+      "type": "project",
+      "path": "../WebStoreAPP.Common/WebStoreAPP.Common.csproj",
+      "msbuildProject": "../WebStoreAPP.Common/WebStoreAPP.Common.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETStandard,Version=v2.0": [
       "DomainModels >= 1.0.0",
-      "NETStandard.Library >= 2.0.1"
+      "NETStandard.Library >= 2.0.3",
+      "WebStoreAPP.Common >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -3683,6 +3703,9 @@
           "projectReferences": {
             "C:\\WebStoreApp\\DomainModels\\DomainModels.csproj": {
               "projectPath": "C:\\WebStoreApp\\DomainModels\\DomainModels.csproj"
+            },
+            "C:\\WebStoreApp\\WebStoreAPP.Common\\WebStoreAPP.Common.csproj": {
+              "projectPath": "C:\\WebStoreApp\\WebStoreAPP.Common\\WebStoreAPP.Common.csproj"
             }
           }
         }
@@ -3699,7 +3722,7 @@
           "NETStandard.Library": {
             "suppressParent": "All",
             "target": "Package",
-            "version": "[2.0.1, )",
+            "version": "[2.0.3, )",
             "autoReferenced": true
           }
         },

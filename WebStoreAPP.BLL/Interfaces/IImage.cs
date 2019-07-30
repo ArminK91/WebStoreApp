@@ -11,5 +11,6 @@ namespace WebStoreAPP.BLL.Interfaces
         Task<List<Image>> GetAllImagesForProduct(int productId);
         Task<bool> DeleteImage(int imageId);
         Task<bool> DeleteImagesForProduct(int productId);
+        Task<Image> SnimiPodatkeOSlici(string path, int productId);
     }
 }
