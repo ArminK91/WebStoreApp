@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DomainModels.Context;
 using DomainModels.DbModels;
+using Microsoft.EntityFrameworkCore;
 using WebStoreAPP.BLL.Interfaces;
 
 namespace WebStoreAPP.BLL.ImageService
@@ -52,6 +53,13 @@ namespace WebStoreAPP.BLL.ImageService
             await _ctx.SaveChangesAsync();
 
             return image;
+        }
+
+        public async Task<Slika> DajSliku(int Id)
+        {
+            var slika = await _ctx.Slike.FirstOrDefaultAsync(x => x.Id == Id);
+
+            return slika;
         }
     }
 }

@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
+using WebStoreApp.API.Helpers;
 using WebStoreAPP.BLL;
 using WebStoreAPP.BLL.AutomobilService;
 using WebStoreAPP.BLL.CategoryService;
@@ -54,7 +55,7 @@ namespace WebStoreApp.API
 
             services.AddMvc();
             services.AddAutoMapper();
-
+            services.Configure<CloudinarySettings>(Configuration.GetSection("ColudinarySettings"));
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);

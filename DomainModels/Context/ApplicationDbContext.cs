@@ -70,6 +70,8 @@ namespace DomainModels.Context
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<Slika> Slike { get; set; }
+
         public DbSet<ProductImages> ProductsImages { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<Category> Categories { get; set; }

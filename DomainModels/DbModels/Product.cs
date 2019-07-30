@@ -39,5 +39,7 @@ namespace DomainModels.DbModels
         //public ApplicationUser User { get; set; }
         //[ForeignKey("CategoryId")]
         public Category Category { get; set; }
+
+        public virtual ICollection<Slika> Slike { get; set; }
     }
 }

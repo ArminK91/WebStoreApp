@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+
 
 namespace WebStoreAPP.Common.ViewModels
 {
@@ -34,5 +36,6 @@ namespace WebStoreAPP.Common.ViewModels
         public virtual AutomobilViewModel Auto { get; set; }
         //public ApplicationUserViewModel User { get; set; }
         //public Category Category { get; set; }
+        public virtual ICollection<SlikaDetaljiDto> Slike { get; set; }
     }
 }

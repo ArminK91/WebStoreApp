@@ -12,9 +12,10 @@ using WebStoreAPP.Common.Enumi;
 namespace DomainModels.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190730221529_PhotoKlasa")]
+    partial class PhotoKlasa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -234,8 +235,6 @@ namespace DomainModels.Migrations
 
                     b.Property<string>("Opis");
 
-                    b.Property<int?>("ProductId");
-
                     b.Property<int>("ProizvodId");
 
                     b.Property<string>("PublicId");
@@ -243,8 +242,6 @@ namespace DomainModels.Migrations
                     b.Property<string>("Url");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
 
                     b.HasIndex("ProizvodId");
 
@@ -284,10 +281,6 @@ namespace DomainModels.Migrations
 
             modelBuilder.Entity("DomainModels.DbModels.Slika", b =>
                 {
-                    b.HasOne("DomainModels.DbModels.Product")
-                        .WithMany("Slike")
-                        .HasForeignKey("ProductId");
-
                     b.HasOne("DomainModels.DbModels.Proizvod", "Proizvod")
                         .WithMany()
                         .HasForeignKey("ProizvodId")
