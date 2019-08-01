@@ -48,6 +48,7 @@ namespace WebStoreApp.API
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
 
             //services.AddIdentity<ApplicationUser, IdentityRole>()
             //    .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -55,7 +56,6 @@ namespace WebStoreApp.API
 
             services.AddMvc();
             services.AddAutoMapper();
-            services.Configure<CloudinarySettings>(Configuration.GetSection("ColudinarySettings"));
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);

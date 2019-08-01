@@ -10,7 +10,7 @@ namespace WebStoreAPP.Common.ViewModels
         public string Opis { get; set; }
         public string Marka { get; set; }
         public decimal Kilometri { get; set; }
-        public DateTime Godiste { get; set; }
+        public string Godiste { get; set; }
         public string Boja { get; set; }
         public string Motor { get; set; }
         public bool PodizaciStakala { get; set; }

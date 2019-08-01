@@ -27,6 +27,8 @@ namespace WebStoreAPP.Common.ViewModels
 
         public int? UserId { get; set; }
 
+        public string slikaUrl { get; set; }
+
         //public int? AutomobilId { get; set; }
 
         public DateTime? DatumObjave { get; set; }
@@ -36,6 +38,6 @@ namespace WebStoreAPP.Common.ViewModels
         public virtual AutomobilViewModel Auto { get; set; }
         //public ApplicationUserViewModel User { get; set; }
         //public Category Category { get; set; }
-        public virtual ICollection<SlikaDetaljiDto> Slike { get; set; }
+        public virtual IEnumerable<SlikaDetaljiDto> Slike { get; set; }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using DomainModels.DbModels;
 using WebStoreAPP.Common.ViewModels;
 
@@ -24,7 +25,7 @@ namespace WebStoreAPP.Common.Mappers
                 Registrovan = automobilViewModel.Registrovan,
                 PodizaciStakala = automobilViewModel.PodizaciStakala,
                 Motor = automobilViewModel.Motor,
-                ProizvodId = automobilViewModel.ProizvodId.GetValueOrDefault()
+                ProizvId = automobilViewModel.ProizvodId.GetValueOrDefault()
             };
         }
 
@@ -47,7 +48,7 @@ namespace WebStoreAPP.Common.Mappers
                 Siber = automobil.Siber,
                 Xenoni = automobil.Xenoni,
                 Zastita = automobil.Zastita,
-                ProizvodId = automobil.ProizvodId
+                ProizvodId = automobil.ProizvId
             };
         }
     }

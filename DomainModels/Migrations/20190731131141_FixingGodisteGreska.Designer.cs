@@ -12,9 +12,10 @@ using WebStoreAPP.Common.Enumi;
 namespace DomainModels.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190731131141_FixingGodisteGreska")]
+    partial class FixingGodisteGreska
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,7 +67,7 @@ namespace DomainModels.Migrations
 
                     b.Property<bool>("PodizaciStakala");
 
-                    b.Property<int>("ProizvId");
+                    b.Property<int>("ProizvodId");
 
                     b.Property<bool>("Registrovan");
 
@@ -131,27 +132,7 @@ namespace DomainModels.Migrations
                     b.ToTable("Images","dbo");
                 });
 
-            modelBuilder.Entity("DomainModels.DbModels.ProductImages", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("ImageId");
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<int?>("ProductId1");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("ProductId1");
-
-                    b.ToTable("ProductsImages","dbo");
-                });
-
-            modelBuilder.Entity("DomainModels.DbModels.Proizvod", b =>
+            modelBuilder.Entity("DomainModels.DbModels.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -180,7 +161,43 @@ namespace DomainModels.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Proizvodi","dbo");
+                    b.ToTable("Products","dbo");
+                });
+
+            modelBuilder.Entity("DomainModels.DbModels.ProductImages", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ImageId");
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<int?>("ProductId1");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ProductId1");
+
+                    b.ToTable("ProductsImages","dbo");
+                });
+
+            modelBuilder.Entity("DomainModels.DbModels.Proizvod", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("DatumObjave");
+
+                    b.Property<string>("Opis");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Proizvod");
                 });
 
             modelBuilder.Entity("DomainModels.DbModels.Sifarnik", b =>
@@ -218,6 +235,8 @@ namespace DomainModels.Migrations
 
                     b.Property<string>("Opis");
 
+                    b.Property<int?>("ProductId");
+
                     b.Property<int>("ProizvodId");
 
                     b.Property<string>("PublicId");
@@ -225,6 +244,8 @@ namespace DomainModels.Migrations
                     b.Property<string>("Url");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("ProizvodId");
 
@@ -238,6 +259,18 @@ namespace DomainModels.Migrations
                         .HasForeignKey("IdentityId1");
                 });
 
+            modelBuilder.Entity("DomainModels.DbModels.Product", b =>
+                {
+                    b.HasOne("DomainModels.DbModels.Automobil", "Auto")
+                        .WithMany()
+                        .HasForeignKey("AutoId");
+
+                    b.HasOne("DomainModels.DbModels.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("DomainModels.DbModels.ProductImages", b =>
                 {
                     b.HasOne("DomainModels.DbModels.Image", "Image")
@@ -245,27 +278,19 @@ namespace DomainModels.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("DomainModels.DbModels.Proizvod", "Product")
+                    b.HasOne("DomainModels.DbModels.Product", "Product")
                         .WithMany("ProductImages")
                         .HasForeignKey("ProductId1");
                 });
 
-            modelBuilder.Entity("DomainModels.DbModels.Proizvod", b =>
-                {
-                    b.HasOne("DomainModels.DbModels.Automobil", "Auto")
-                        .WithMany()
-                        .HasForeignKey("AutoId");
-
-                    b.HasOne("DomainModels.DbModels.Category", "Category")
-                        .WithMany("Proizvodi")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("DomainModels.DbModels.Slika", b =>
                 {
-                    b.HasOne("DomainModels.DbModels.Proizvod", "Proizvod")
+                    b.HasOne("DomainModels.DbModels.Product")
                         .WithMany("Slike")
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("DomainModels.DbModels.Proizvod", "Proizvod")
+                        .WithMany()
                         .HasForeignKey("ProizvodId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

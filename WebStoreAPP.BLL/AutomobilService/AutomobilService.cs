@@ -24,11 +24,11 @@ namespace WebStoreAPP.BLL.AutomobilService
             return automobili;
         }
 
-        public async Task<IEnumerable<Product>> DohvatiAutomobileZaUsera(string userName)
+        public async Task<IEnumerable<Proizvod>> DohvatiAutomobileZaUsera(string userName)
         {
             var user = _ctx.Users.FirstOrDefaultAsync(x => x.Username == userName);
 
-            var proizvodi = await _ctx.Products.Include(i => i.Auto).Where(x => x.UserId == user.Id && x.CategoryId == (int) Kategorija.Auta && x.Status == true).ToListAsync();
+            var proizvodi = await _ctx.Proizvodi.Include(i => i.Auto).Where(x => x.UserId == user.Id && x.CategoryId == (int) Kategorija.Auta && x.Status == true).ToListAsync();
 
             return proizvodi.AsEnumerable();
         }
@@ -62,7 +62,7 @@ namespace WebStoreAPP.BLL.AutomobilService
         public async Task<bool> ObrisiAutomobil(int automobilId)
         {
             var auto = await _ctx.Automobili.FirstOrDefaultAsync(x => x.Id == automobilId);
-            var proizvod = await _ctx.Products.FirstOrDefaultAsync(x => x.Id == auto.ProizvodId);
+            var proizvod = await _ctx.Proizvodi.FirstOrDefaultAsync(x => x.Id == auto.ProizvId);
 
             auto.Status = (int)StatusSloga.NEAKTIVAN;
             proizvod.Status = false;

@@ -8,6 +8,6 @@ namespace DomainModels.DbModels
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public IList<Product> Products { get; set; }
+        public IList<Proizvod> Proizvodi { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DomainModels.Context;
@@ -60,6 +61,30 @@ namespace WebStoreAPP.BLL.ImageService
             var slika = await _ctx.Slike.FirstOrDefaultAsync(x => x.Id == Id);
 
             return slika;
+        }
+
+        public async Task<Slika> DajGlavnuSliku(int proizvodId)
+        {
+            var proizvod = await _ctx.Proizvodi.FirstOrDefaultAsync(x => x.Id == proizvodId);
+
+            var slikaGlavna = proizvod.Slike.Where(v => v.Glavna).FirstOrDefault();
+
+            return slikaGlavna;
+        }
+
+        public async Task<IEnumerable<Slika>> SnimiSliku(Slika slika)
+        {
+            var s = await _ctx.Slike.FirstOrDefaultAsync(c => c.Id == slika.Id);
+
+            s.Glavna = slika.Glavna;
+
+            _ctx.Entry(s).State = EntityState.Modified;
+
+            await _ctx.SaveChangesAsync();
+
+            var slike = _ctx.Slike.Where(x => x.ProizvodId == slika.ProizvodId).AsEnumerable();
+
+            return slike;
         }
     }
 }

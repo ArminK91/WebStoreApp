@@ -1,13 +1,10 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using WebStoreAPP.BLL.Interfaces;
 using WebStoreAPP.Common.Enumi;
 using WebStoreAPP.Common.Mappers;
@@ -49,7 +46,7 @@ namespace WebStoreAPP.API.Controllers
         }
         
         [HttpGet]
-        [Route("getallproducts")]
+        [Route("sviproizvodi")]
         public async Task<IActionResult> GetProducts()
         {
             try

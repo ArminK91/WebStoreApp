@@ -17,7 +17,7 @@ using WebStoreAPP.Common.ViewModels;
 namespace WebStoreApp.API.Controllers
 {
     [Authorize]
-    [Route("api/proizvodi/{proizvodId}/slike")]
+    [Route("api/proizvodislike")]
     public class SlikeController : Controller
     {
         private readonly IProduct _productService;
@@ -35,17 +35,17 @@ namespace WebStoreApp.API.Controllers
             _mapper = mapper;
 
             Account acc = new Account(
-                _cloudinaryConfig.Value.CloudName,
-                _cloudinaryConfig.Value.ApiKey,
-                _cloudinaryConfig.Value.ApiSecret
+                "dfxrccfyu",
+                "555938815487972",
+                "LiVqyZ5d52u6N4Ug4JM-fvKoi7Y"
             );
 
             _cloudinary = new Cloudinary(acc);
         }
 
         [HttpGet]
-        [Route("dajsliku{id}")]
-        public async Task<IActionResult> DajSliku(int Id)
+        [Route("{id}", Name = "DajSliku")]
+        public async Task<IActionResult> DajSliku([FromRoute]int Id)
         {
             var slika = await _imageService.DajSliku(Id);
 
@@ -55,7 +55,8 @@ namespace WebStoreApp.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DodajSlikuZaProizvod(int productId, SlikaZaKreiranjeDto slika)
+        [Route("dodajslikuzaproizvod/{productId}")]
+        public async Task<IActionResult> DodajSlikuZaProizvod([FromRoute]int productId, [FromForm]SlikaZaKreiranjeDto slika)
         {
             var file = slika.File;
 
@@ -80,13 +81,14 @@ namespace WebStoreApp.API.Controllers
 
             slika.Url = uploadResults.Uri.ToString();
             slika.PublicId = uploadResults.PublicId;
+            slika.ProizvodId = proizvod.Id;
 
             var slikaDb = _mapper.Map<Slika>(slika);
 
-            if (!proizvod.Slike.Any(v => v.Glavna))
-            {
-                slikaDb.Glavna = true;
-            }
+            //if (proizvod.Slike != null || proizvod.Slike.Count == 0)
+            //{
+            //    slikaDb.Glavna = true;
+            //}
 
             proizvod.Slike.Add(slikaDb);
 
@@ -102,6 +104,38 @@ namespace WebStoreApp.API.Controllers
 
             return BadRequest("Greska prilikom dodavanja slike!");
         }
+
+        [HttpPost("{proizvodId}/postaviglavnu/{id}")]
+        public async Task<IActionResult> PostaviZaGlavnu(int proizvodId, int id)
+        {
+
+
+            var product = await _productService.GetProductById(proizvodId, User.Identity.Name);
+
+            if (!product.Slike.Any(p => p.Id == id))
+            {
+                return Unauthorized();
+            }
+
+            var slika = await _imageService.DajSliku(id);
+
+            if (slika.Glavna)
+                BadRequest("Ovo je vec glavna slika!");
+
+            var trenutnaGlavnaSlika = await _imageService.DajGlavnuSliku(proizvodId);
+
+            if (trenutnaGlavnaSlika != null)
+            { 
+                trenutnaGlavnaSlika.Glavna = false;
+            }
+
+            slika.Glavna = true;
+
+            var slike = await _imageService.SnimiSliku(slika);
+
+            return Ok(_mapper.Map<List<SlikaDetaljiDto>>(slike));
+        }
+
     }
 
 }

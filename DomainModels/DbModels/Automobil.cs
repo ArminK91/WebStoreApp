@@ -11,7 +11,7 @@ namespace DomainModels.DbModels
         public string Marka { get; set; }
         public string Opis { get; set; }
         public decimal Kilometri { get; set; }
-        public DateTime Godiste { get; set; }
+        public string Godiste { get; set; }
         public string Motor { get; set; }
         public bool PodizaciStakala { get; set; }
         public bool ServoVolan { get; set; }
@@ -21,7 +21,7 @@ namespace DomainModels.DbModels
         public bool GrijaciSjedista { get; set; }
         public bool Siber { get; set; }
         public bool Registrovan { get; set; }
-        public int ProizvodId { get; set; }
+        public int ProizvId { get; set; }
         public decimal Cijena { get; set; }
         public int Status { get; set; }
     }

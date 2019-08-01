@@ -12,7 +12,7 @@ namespace WebStoreAPP.Common.ViewModels
         public string Opis { get; set; }
         public DateTime DatumDodavanja { get; set; }
         public string PublicId { get; set; }
-
+        public int ProizvodId { get; set; }
         public SlikaZaKreiranjeDto()
         {
             DatumDodavanja = DateTime.Now;

@@ -27,54 +27,78 @@ namespace WebStoreAPP.BLL.ProductService
             var user = await GetUserByUserName(userName);
 
 
-           var productForDelete = _ctx.Products.Include(i => i.Auto).Where(x => x.Id == productId && x.UserId == user.Id).FirstOrDefault();
+           var productForDelete = _ctx.Proizvodi
+               .Include(i => i.Auto)
+               .Include(i => i.Slike)
+               .Where(x => x.Id == productId && x.UserId == user.Id)
+               .FirstOrDefault();
 
             if (productForDelete == null)
                 throw new Exception("Proizvod nije pronadjen za brisanje1");
 
-            _ctx.Products.Remove(productForDelete);
+            _ctx.Proizvodi.Remove(productForDelete);
 
             await _ctx.SaveChangesAsync();
 
         }
 
-        public async Task<List<Product>> GetAllProductForUser(int userId)
+        public async Task<List<Proizvod>> GetAllProductForUser(int userId)
         {
             var user = _ctx.Users.FirstOrDefault(x => x.Id == userId);
             
             if (user == null)
                 throw new Exception("Nemoguce vratiti proizvode za ovog korisnika, jer korisnik ne postoji!");
 
-            var sviProizvodiKorisnika = await _ctx.Products.Include(i => i.Auto).Where(x => x.UserId == userId).ToListAsync();
+            var sviProizvodiKorisnika = 
+                                        await _ctx.Proizvodi
+                                                  .Include(i => i.Auto)
+                                                  .Include(i => i.Slike)
+                                                  .Where(x => x.UserId == userId)
+                                                  .ToListAsync();
 
             return sviProizvodiKorisnika;
         }
 
-        public async Task<IEnumerable<Product>> GetAllProducts(string userName)
+        public async Task<IEnumerable<Proizvod>> GetAllProducts(string userName)
         {
-            var sviProizvodi = await _ctx.Products.Include(i => i.Auto).ToListAsync();
+            var sviProizvodi = 
+                                await _ctx.Proizvodi
+                                          .Include(i => i.Auto)
+                                          .Include(i => i.Slike)
+                                          .ToListAsync();
 
             return sviProizvodi;
         }
 
-        public async Task<Product> GetProductById(int productId, string userName)
+        public async Task<Proizvod> GetProductById(int productId, string userName)
         {
             if (productId == null)
                 throw new Exception("Nemoguce dohvatiti proizvod.");
 
-            var prozivod = await _ctx.Products.Include(i => i.Auto).Where(x => x.Id == productId).FirstOrDefaultAsync();
+            var prozivod = await _ctx.Proizvodi
+                .Include(i => i.Auto)
+                .Include(i => i.Slike)
+                .Where(x => x.Id == productId)
+                .FirstOrDefaultAsync();
+
+            var auto = await _ctx.Automobili.Where(x => x.ProizvId == productId).FirstOrDefaultAsync();
+            var slike = await _ctx.Slike.Where(x => x.ProizvodId == productId).ToListAsync();
+
+            prozivod.Auto = auto;
+            prozivod.Slike = slike;
 
             return prozivod;
         }
 
         private async Task<ApplicationUser> GetUserByUserName(string userName)
         {
-            var user = await _ctx.Users.FirstOrDefaultAsync(x => x.Username == userName);
+            var user = await _ctx.Users
+                .FirstOrDefaultAsync(x => x.Username == userName);
             return user;
         }
 
 
-        public async Task<Product> SaveProduct(Product product, string userName)
+        public async Task<Proizvod> SaveProduct(Proizvod product, string userName)
         {
             if (product == null || userName == null)
                 throw new Exception("Nista od spasavanja.");
@@ -82,48 +106,65 @@ namespace WebStoreAPP.BLL.ProductService
             var user = await GetUserByUserName(userName);
 
             product.UserId = user.Id;
+            product.DatumObjave = DateTime.Now;
 
-            _ctx.Products.Add(product);
+            _ctx.Proizvodi.Add(product);
 
             await _ctx.SaveChangesAsync();
 
             return product;
         }
 
-        public async Task<List<Product>> SearchProductsAsync(string term, Kategorija kategorija, string userName)
+        public async Task<List<Proizvod>> SearchProductsAsync(string term, Kategorija kategorija, string userName)
         {
             if (term == null || term == "")
                 return null;
 
-            var proizvodi = await _ctx.Products.Include(i => i.Auto).Where(x => x.Naziv.Contains(term)).ToListAsync();
+            var proizvodi = await _ctx.Proizvodi
+                .Include(i => i.Auto)
+                .Include(i => i.Slike)
+                .Where(x => x.Naziv.Contains(term))
+                .ToListAsync();
 
             return proizvodi;
         }
 
-        public async Task<List<Product>> SearchProductsByCategoryAsync(int categoryId, string userName)
+        public async Task<List<Proizvod>> SearchProductsByCategoryAsync(int categoryId, string userName)
         {
             if (categoryId == 0)
                 return null;
 
-            var proizvodi = await _ctx.Products.Include(i => i.Auto).Where(x => x.CategoryId == categoryId).ToListAsync();
+            var proizvodi = await _ctx.Proizvodi
+                .Include(i => i.Auto)
+                .Include(i => i.Slike)
+                .Where(x => x.CategoryId == categoryId)
+                .ToListAsync();
 
             return proizvodi;
         }
 
-        public async Task<List<Product>> SerachProductsByPriceRangeAsync(decimal lowerBoundary, decimal higherBoundary, string userName)
+        public async Task<List<Proizvod>> SerachProductsByPriceRangeAsync(decimal lowerBoundary, decimal higherBoundary, string userName)
         {
             if (lowerBoundary <= 0 || higherBoundary <= 0)
                 return null;
 
             if (lowerBoundary == higherBoundary)
             {
-                return await _ctx.Products.Include(i => i.Auto).Where(x => x.Price == lowerBoundary).ToListAsync();
+                return await _ctx.Proizvodi
+                    .Include(i => i.Auto)
+                    .Include(i => i.Slike)
+                    .Where(x => x.Price == lowerBoundary)
+                    .ToListAsync();
             }
 
-            return await _ctx.Products.Include(i => i.Auto).Where(x => x.Price >= lowerBoundary && x.Price <= higherBoundary).ToListAsync();
+            return await _ctx.Proizvodi
+                .Include(i => i.Auto)
+                .Include(i => i.Slike)
+                .Where(x => x.Price >= lowerBoundary && x.Price <= higherBoundary)
+                .ToListAsync();
         }
 
-        public async Task<Product> UpdateProduct(Product product, string userName)
+        public async Task<Proizvod> UpdateProduct(Proizvod product, string userName)
         {
             if (product == null || userName == null)
                 throw new Exception("Nista od spasavanja.");
