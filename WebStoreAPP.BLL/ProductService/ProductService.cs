@@ -30,7 +30,7 @@ namespace WebStoreAPP.BLL.ProductService
            var productForDelete = _ctx.Proizvodi
                .Include(i => i.Auto)
                .Include(i => i.Slike)
-               .Where(x => x.Id == productId && x.UserId == user.Id)
+               .Where(x => x.Id == productId && x.UsrId == user.Id)
                .FirstOrDefault();
 
             if (productForDelete == null)
@@ -52,7 +52,7 @@ namespace WebStoreAPP.BLL.ProductService
             var sviProizvodiKorisnika = await _ctx.Proizvodi
                                                   .Include(i => i.Auto)
                                                   .Include(i => i.Slike)
-                                                  .Where(x => x.UserId == user.Id)
+                                                  .Where(x => x.UsrId == user.Id)
                                                   .ToListAsync();
 
             return sviProizvodiKorisnika;
@@ -64,6 +64,7 @@ namespace WebStoreAPP.BLL.ProductService
                                 await _ctx.Proizvodi
                                           .Include(i => i.Auto)
                                           .Include(i => i.Slike)
+                                          .Include(i => i.User)
                                           .ToListAsync();
 
             return sviProizvodi;
@@ -77,6 +78,7 @@ namespace WebStoreAPP.BLL.ProductService
             var prozivod = await _ctx.Proizvodi
                 .Include(i => i.Auto)
                 .Include(i => i.Slike)
+                .Include(i => i.User)
                 .Where(x => x.Id == productId)
                 .FirstOrDefaultAsync();
 
@@ -104,7 +106,7 @@ namespace WebStoreAPP.BLL.ProductService
 
             var user = await GetUserByUserName(userName);
 
-            product.UserId = user.Id;
+            product.UsrId = user.Id;
             product.DatumObjave = DateTime.Now;
 
             _ctx.Proizvodi.Add(product);
@@ -170,7 +172,7 @@ namespace WebStoreAPP.BLL.ProductService
 
             var user = await GetUserByUserName(userName);
 
-            product.UserId = user.Id;
+            product.UsrId = user.Id;
 
             _ctx.Entry(product).State = EntityState.Modified;
 

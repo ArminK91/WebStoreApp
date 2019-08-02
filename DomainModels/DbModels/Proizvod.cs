@@ -10,6 +10,7 @@ namespace DomainModels.DbModels
         {
             ProductImages = new HashSet<ProductImages>();
             Slike = new HashSet<Slika>();
+            Poruke = new HashSet<Poruka>();
         }
 
         public int Id { get; set; }
@@ -26,7 +27,7 @@ namespace DomainModels.DbModels
 
         public int CategoryId { get; set; }
 
-        public int UserId { get; set; }
+        public int UsrId { get; set; }
 
         //public int? AutomobilId { get; set; }
 
@@ -37,10 +38,12 @@ namespace DomainModels.DbModels
         //[ForeignKey("AutomobilId")]
         public Automobil Auto { get; set; }
         //[ForeignKey("UserId")]
-        //public ApplicationUser User { get; set; }
+        public virtual ApplicationUser User { get; set; }
         //[ForeignKey("CategoryId")]
-        public Category Category { get; set; }
+        public virtual Category Category { get; set; }
 
         public virtual ICollection<Slika> Slike { get; set; }
+
+        public virtual ICollection<Poruka> Poruke { get; set; }
     }
 }

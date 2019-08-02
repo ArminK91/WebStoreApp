@@ -12,9 +12,10 @@ using WebStoreAPP.Common.Enumi;
 namespace DomainModels.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190802080620_DodavanjePorukaTabela")]
+    partial class DodavanjePorukaTabela
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,8 +140,6 @@ namespace DomainModels.Migrations
                     b.Property<int>("ApplicationUserID");
 
                     b.Property<DateTime?>("DatumObjave");
-
-                    b.Property<int>("Status");
 
                     b.Property<string>("Tekst");
 

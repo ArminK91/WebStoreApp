@@ -36,6 +36,8 @@ namespace WebStoreAPP.Common.ViewModels
         //public ICollection<ProductImagesViewModel> ProductImages { get; set; }
 
         public virtual AutomobilViewModel Auto { get; set; }
+
+        public virtual UserViewModel User { get; set; }
         //public ApplicationUserViewModel User { get; set; }
         //public Category Category { get; set; }
         public virtual IEnumerable<SlikaDetaljiDto> Slike { get; set; }

@@ -17,4 +17,11 @@ namespace WebStoreAPP.Common.Enumi
         NEAKTIVAN = 0,
         AKTIVAN = 1
     }
+
+    public enum StatusPoruke
+    {
+        NEAKTIVNA = 0,
+        AKTIVNA = 1,
+        PROCITANA = 2,
+    }
 }

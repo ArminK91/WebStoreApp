@@ -53,6 +53,7 @@ namespace DomainModels.Context
             builder.Entity<ProductImages>().ToTable("ProductsImages", "dbo");
             builder.Entity<Category>().ToTable("Categories", "dbo");
             builder.Entity<Automobil>().ToTable("Automobili", "dbo");
+            builder.Entity<Poruka>().ToTable("Poruke", "dbo");
             builder.Entity<Sifarnik>().ToTable("Sifarnik", "dbo");
 
 
@@ -77,9 +78,11 @@ namespace DomainModels.Context
         public DbSet<Category> Categories { get; set; }
         public DbSet<Automobil> Automobili { get; set; }
         public DbSet<Sifarnik> Sifarnik { get; set; }
+        public DbSet<Poruka> Poruke { get; set; }
+
 
     }
 
 
-  
+
 }

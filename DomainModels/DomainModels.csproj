@@ -9,6 +9,10 @@
     <Compile Remove="Migrations\20190730104842_FkProductsRemoved.Designer.cs" />
     <Compile Remove="Migrations\20190801070235_reogranizacijaIzmjene.cs" />
     <Compile Remove="Migrations\20190801070235_reogranizacijaIzmjene.Designer.cs" />
+    <Compile Remove="Migrations\20190802080359_DodavanjePorukaTabela.cs" />
+    <Compile Remove="Migrations\20190802080359_DodavanjePorukaTabela.Designer.cs" />
+    <Compile Remove="Migrations\20190802081821_por.cs" />
+    <Compile Remove="Migrations\20190802081821_por.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.2" />

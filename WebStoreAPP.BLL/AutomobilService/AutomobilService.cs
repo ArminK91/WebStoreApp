@@ -28,7 +28,7 @@ namespace WebStoreAPP.BLL.AutomobilService
         {
             var user = _ctx.Users.FirstOrDefaultAsync(x => x.Username == userName);
 
-            var proizvodi = await _ctx.Proizvodi.Include(i => i.Auto).Where(x => x.UserId == user.Id && x.CategoryId == (int) Kategorija.Auta && x.Status == true).ToListAsync();
+            var proizvodi = await _ctx.Proizvodi.Include(i => i.Auto).Where(x => x.UsrId == user.Id && x.CategoryId == (int) Kategorija.Auta && x.Status == true).ToListAsync();
 
             return proizvodi.AsEnumerable();
         }

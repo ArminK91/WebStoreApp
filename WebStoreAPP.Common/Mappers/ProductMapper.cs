@@ -11,7 +11,7 @@ namespace WebStoreAPP.Common.Mappers
             Id = productViewModel.Id,
             Naziv = productViewModel.Naziv,
             CategoryId = productViewModel.TipProizvoda,
-            UserId = productViewModel.UserId.GetValueOrDefault(),
+            UsrId = productViewModel.UserId.GetValueOrDefault(),
             DatumObjave = productViewModel.DatumObjave.GetValueOrDefault(),
             Adress = productViewModel.Adresa,
             Description = productViewModel.Opis,
@@ -25,14 +25,15 @@ namespace WebStoreAPP.Common.Mappers
             Id = product.Id,
             Naziv = product.Naziv,
             TipProizvoda = product.CategoryId,
-            UserId = product.UserId,
+            UserId = product.UsrId,
             DatumObjave = product.DatumObjave,
             Adresa = product.Adress,
             Cijena = product.Price,
             Opis = product.Description,
             slikaUrl = product.Slike.Count == 0 ? null : product.Slike.FirstOrDefault().Url,
             Auto = product.Auto == null ? null : product.Auto.ToViewModel(),
-            Slike = product.Slike == null ? null : product.Slike.Select(c => c.ToViewModel())
+            Slike = product.Slike == null ? null : product.Slike.Select(c => c.ToViewModel()),
+            User = product.User == null ? null : product.User.ToViewModel()
         };
 
         public static SlikaDetaljiDto ToViewModel(this Slika slika) => new SlikaDetaljiDto()
