@@ -56,7 +56,7 @@ namespace WebStoreApp.API.Controllers
 
         [HttpDelete]
         [Route("obrisi/{porukaId}")]
-        public async Task<IActionResult> SnimiPorukuZaProizvod(int porukaId)
+        public async Task<IActionResult> ObrisiPoruku(int porukaId)
         {
             try
             {
