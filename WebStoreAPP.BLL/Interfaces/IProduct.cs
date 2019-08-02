@@ -11,7 +11,7 @@ namespace WebStoreAPP.BLL.Interfaces
         Task<Proizvod> GetProductById(int productId, string username);
         Task<Proizvod> SaveProduct(Proizvod product, string username);
         Task<Proizvod> UpdateProduct(Proizvod product, string username);
-        Task<List<Proizvod>> GetAllProductForUser(int userId);
+        Task<List<Proizvod>> GetAllProductForUser(string userName);
         Task<List<Proizvod>> SearchProductsAsync(string term, Kategorija kategorija, string username);
         Task<List<Proizvod>> SearchProductsByCategoryAsync(int categoryId, string username);
         Task<List<Proizvod>> SerachProductsByPriceRangeAsync(decimal lowerBoundary, decimal higherBoundary, string username);

@@ -1,10 +1,14 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using WebStoreAPP.BLL.Interfaces;
 using WebStoreAPP.Common.Enumi;
 using WebStoreAPP.Common.Mappers;
@@ -32,12 +36,37 @@ namespace WebStoreAPP.API.Controllers
         }
 
         [HttpGet]
-        [Route("getproductsnew")]
-        public async Task<IActionResult> GetNewProducts()
+        [Route("dajproizvodekorisnika2")]
+        public async Task<IActionResult> DajProizvodeKorisnika2()
         {
             try
             {
-                return Ok();
+                var proizvodiKorisnika = await _productService.GetAllProductForUser(User.Identity.Name);
+                var vmProiz = proizvodiKorisnika.Select(c => c.ToViewModel());
+                var bb = new ProdVm();
+
+                bb.data = vmProiz;
+
+                var o = JsonConvert.SerializeObject(bb);
+
+
+                return Ok(o);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("dajproizvodekorisnika")]
+        public async Task<IActionResult> DajProizvodeKorisnika()
+        {
+            try
+            {
+                var proizvodiKorisnika = await _productService.GetAllProductForUser(User.Identity.Name);
+
+                return Ok(proizvodiKorisnika.Select(c => c.ToViewModel()));
             }
             catch (Exception ex)
             {
@@ -213,5 +242,10 @@ namespace WebStoreAPP.API.Controllers
             }
         
         }
+    }
+
+    public class ProdVm
+    {
+        public IEnumerable<ProductViewModel> data { get; set; }
     }
 }

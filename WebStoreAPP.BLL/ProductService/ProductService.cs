@@ -42,18 +42,17 @@ namespace WebStoreAPP.BLL.ProductService
 
         }
 
-        public async Task<List<Proizvod>> GetAllProductForUser(int userId)
+        public async Task<List<Proizvod>> GetAllProductForUser(string userName)
         {
-            var user = _ctx.Users.FirstOrDefault(x => x.Id == userId);
+            var user = await _ctx.Users.FirstOrDefaultAsync(x => x.Username == userName);
             
             if (user == null)
                 throw new Exception("Nemoguce vratiti proizvode za ovog korisnika, jer korisnik ne postoji!");
 
-            var sviProizvodiKorisnika = 
-                                        await _ctx.Proizvodi
+            var sviProizvodiKorisnika = await _ctx.Proizvodi
                                                   .Include(i => i.Auto)
                                                   .Include(i => i.Slike)
-                                                  .Where(x => x.UserId == userId)
+                                                  .Where(x => x.UserId == user.Id)
                                                   .ToListAsync();
 
             return sviProizvodiKorisnika;
