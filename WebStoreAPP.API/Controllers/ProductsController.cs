@@ -95,7 +95,7 @@ namespace WebStoreAPP.API.Controllers
 
        
         [HttpGet]
-        [Route("getproductbyid/{productId}")]
+        [Route("dajproizvodpoid/{productId}")]
         public async Task<IActionResult> GetProductById(int productId)
         {
             try
@@ -113,7 +113,7 @@ namespace WebStoreAPP.API.Controllers
         }
 
         [HttpPost]
-        [Route("saveproduct")]
+        [Route("snimiproizvod")]
         [Authorize]
         public async Task<IActionResult> SaveProduct([FromBody]ProductViewModel model)
         {
@@ -139,7 +139,7 @@ namespace WebStoreAPP.API.Controllers
         }
 
         [HttpPut]
-        [Route("updateproduct")]
+        [Route("azurirajproizvod")]
         public async Task<IActionResult> UpdateProduct([FromBody]ProductViewModel model)
         {
             try
@@ -162,7 +162,7 @@ namespace WebStoreAPP.API.Controllers
         }
 
         [HttpDelete]
-        [Route("deleteproduct/{productId}")]
+        [Route("obrisiproizvod/{productId}")]
         public async Task<IActionResult> DeleteProduct(int productId)
         {
             try
@@ -180,7 +180,26 @@ namespace WebStoreAPP.API.Controllers
         }
 
         [HttpGet]
-        [Route("searchproducts/{term}/{kategorija}")]
+        [Route("okoncajproizvod/{productId}")]
+        public async Task<IActionResult> OkoncajProizvod(int productId)
+        {
+            try
+            {
+                var currentUser = User.Identity.Name;
+
+               var proizvodi = await _productService.OkoncajProizvod(productId, currentUser);
+
+               return Ok(proizvodi.Select(c => c.ToViewModel()));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet]
+        [Route("traziproizvodepojam/{term}/{kategorija}")]
         public async Task<IActionResult> TraziProizvode(string term, Kategorija kategorija)
         {
             try

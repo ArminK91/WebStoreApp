@@ -29,6 +29,8 @@ namespace WebStoreAPP.Common.Mappers
             DatumObjave = product.DatumObjave,
             Adresa = product.Adress,
             Cijena = product.Price,
+            Status = product.Status,
+            StatusProizvoda = product.StatusProizvoda,
             Opis = product.Description,
             slikaUrl = product.Slike.Count == 0 ? null : product.Slike.FirstOrDefault().Url,
             Auto = product.Auto == null ? null : product.Auto.ToViewModel(),

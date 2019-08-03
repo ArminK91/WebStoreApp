@@ -24,4 +24,10 @@ namespace WebStoreAPP.Common.Enumi
         AKTIVNA = 1,
         PROCITANA = 2,
     }
+
+    public enum StatusProizvoda
+    {
+        AKTIVAN = 1,
+        OKONCAN = 2
+    }
 }

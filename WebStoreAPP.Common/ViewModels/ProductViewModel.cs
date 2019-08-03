@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using WebStoreAPP.Common.Enumi;
 
 
 namespace WebStoreAPP.Common.ViewModels
@@ -21,8 +22,6 @@ namespace WebStoreAPP.Common.ViewModels
 
         public decimal Cijena { get; set; }
 
-        //public bool Status { get; set; }
-
         public int TipProizvoda { get; set; }
 
         public int? UserId { get; set; }
@@ -32,8 +31,9 @@ namespace WebStoreAPP.Common.ViewModels
         //public int? AutomobilId { get; set; }
 
         public DateTime? DatumObjave { get; set; }
-
-        //public ICollection<ProductImagesViewModel> ProductImages { get; set; }
+        public StatusProizvoda StatusProizvoda { get; set; }
+        public StatusSloga Status { get; set; }
+        
 
         public virtual AutomobilViewModel Auto { get; set; }
 
@@ -41,5 +41,15 @@ namespace WebStoreAPP.Common.ViewModels
         //public ApplicationUserViewModel User { get; set; }
         //public Category Category { get; set; }
         public virtual IEnumerable<SlikaDetaljiDto> Slike { get; set; }
+
+        public string StatusSlogaOpis
+        {
+            get { return Status == StatusSloga.AKTIVAN ? "Aktivan" : "Neaktivan"; }
+        }
+
+        public string StatusProizvodaOpis
+        {
+            get { return StatusProizvoda == StatusProizvoda.AKTIVAN ? "Aktivan" : "Okončan"; }
+        }
     }
 }

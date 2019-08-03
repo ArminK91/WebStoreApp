@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebStoreAPP.BLL.Interfaces;
 using WebStoreAPP.Common.Mappers;
 using WebStoreAPP.Common.ViewModels;
+using System.Net.Http.Headers;
 
 namespace WebStoreApp.API.Controllers
 {
@@ -24,7 +25,7 @@ namespace WebStoreApp.API.Controllers
 
         [HttpGet]
         [Route("dohvatiporukezaproizvod/{proizvodId}")]
-        public async Task<IActionResult> DohvatiPorukeZaProizvod([FromRoute]int proizvodId)
+        public async Task<IActionResult> DohvatiPorukeZaProizvod(int proizvodId)
         {
             try
             {
@@ -44,7 +45,7 @@ namespace WebStoreApp.API.Controllers
         {
             try
             {
-                var poruke = await _porukeService.SnimiPorukuZaProizvod(poruka.ToModel());
+                var poruke = await _porukeService.SnimiPorukuZaProizvod(poruka.ToModel(), User.Identity.Name);
 
                 return Ok(poruke.Select(c => c.ToViewModel()));
             }

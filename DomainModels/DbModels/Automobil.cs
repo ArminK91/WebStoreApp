@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using WebStoreAPP.Common.Enumi;
 
 namespace DomainModels.DbModels
 {
@@ -23,6 +24,6 @@ namespace DomainModels.DbModels
         public bool Registrovan { get; set; }
         public int ProizvId { get; set; }
         public decimal Cijena { get; set; }
-        public int Status { get; set; }
+        public StatusSloga Status { get; set; }
     }
 }

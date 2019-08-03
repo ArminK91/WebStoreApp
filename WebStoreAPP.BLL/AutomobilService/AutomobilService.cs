@@ -28,7 +28,7 @@ namespace WebStoreAPP.BLL.AutomobilService
         {
             var user = _ctx.Users.FirstOrDefaultAsync(x => x.Username == userName);
 
-            var proizvodi = await _ctx.Proizvodi.Include(i => i.Auto).Where(x => x.UsrId == user.Id && x.CategoryId == (int) Kategorija.Auta && x.Status == true).ToListAsync();
+            var proizvodi = await _ctx.Proizvodi.Include(i => i.Auto).Where(x => x.UsrId == user.Id && x.CategoryId == (int) Kategorija.Auta && x.Status == StatusSloga.AKTIVAN).ToListAsync();
 
             return proizvodi.AsEnumerable();
         }
@@ -37,6 +37,8 @@ namespace WebStoreAPP.BLL.AutomobilService
         {
             if (automobil == null)
                 throw new Exception("Greska prilikom spasavanja automobila!");
+
+            automobil.Status = StatusSloga.AKTIVAN;
 
             _ctx.Automobili.Add(automobil);
 
@@ -64,8 +66,8 @@ namespace WebStoreAPP.BLL.AutomobilService
             var auto = await _ctx.Automobili.FirstOrDefaultAsync(x => x.Id == automobilId);
             var proizvod = await _ctx.Proizvodi.FirstOrDefaultAsync(x => x.Id == auto.ProizvId);
 
-            auto.Status = (int)StatusSloga.NEAKTIVAN;
-            proizvod.Status = false;
+            auto.Status = StatusSloga.NEAKTIVAN;
+            proizvod.Status = StatusSloga.NEAKTIVAN;
 
             _ctx.Entry(proizvod).State = EntityState.Modified;
             _ctx.Entry(auto).State = EntityState.Modified;

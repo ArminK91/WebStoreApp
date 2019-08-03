@@ -28,7 +28,6 @@ namespace WebStoreAPP.BLL.ProductService
 
 
            var productForDelete = _ctx.Proizvodi
-               .Include(i => i.Auto)
                .Include(i => i.Slike)
                .Where(x => x.Id == productId && x.UsrId == user.Id)
                .FirstOrDefault();
@@ -36,10 +35,31 @@ namespace WebStoreAPP.BLL.ProductService
             if (productForDelete == null)
                 throw new Exception("Proizvod nije pronadjen za brisanje1");
 
-            _ctx.Proizvodi.Remove(productForDelete);
+            var auto = await _ctx.Automobili.FirstOrDefaultAsync(x => x.ProizvId == productForDelete.Id);
+
+            productForDelete.Status = StatusSloga.NEAKTIVAN;
+            auto.Status = StatusSloga.NEAKTIVAN;
+
+            _ctx.Entry(productForDelete).State = EntityState.Modified;
+            _ctx.Entry(auto).State = EntityState.Modified;
+
+
 
             await _ctx.SaveChangesAsync();
 
+        }
+
+        public async Task<IEnumerable<Proizvod>> OkoncajProizvod(int productId, string user)
+        {
+            var proizvod = await _ctx.Proizvodi.FirstOrDefaultAsync(x => x.Id == productId);
+
+            proizvod.StatusProizvoda = StatusProizvoda.OKONCAN;
+
+            _ctx.Entry(proizvod).State = EntityState.Modified;
+
+            await _ctx.SaveChangesAsync();
+
+            return await GetAllProductForUser(user);
         }
 
         public async Task<List<Proizvod>> GetAllProductForUser(string userName)
@@ -52,7 +72,7 @@ namespace WebStoreAPP.BLL.ProductService
             var sviProizvodiKorisnika = await _ctx.Proizvodi
                                                   .Include(i => i.Auto)
                                                   .Include(i => i.Slike)
-                                                  .Where(x => x.UsrId == user.Id)
+                                                  .Where(x => x.UsrId == user.Id && x.Status == StatusSloga.AKTIVAN)
                                                   .ToListAsync();
 
             return sviProizvodiKorisnika;
@@ -65,6 +85,7 @@ namespace WebStoreAPP.BLL.ProductService
                                           .Include(i => i.Auto)
                                           .Include(i => i.Slike)
                                           .Include(i => i.User)
+                                          .Where(x => x.Status == StatusSloga.AKTIVAN && x.StatusProizvoda == StatusProizvoda.AKTIVAN)
                                           .ToListAsync();
 
             return sviProizvodi;
@@ -107,6 +128,7 @@ namespace WebStoreAPP.BLL.ProductService
             var user = await GetUserByUserName(userName);
 
             product.UsrId = user.Id;
+            product.Status = StatusSloga.AKTIVAN;
             product.DatumObjave = DateTime.Now;
 
             _ctx.Proizvodi.Add(product);

@@ -25,13 +25,18 @@ namespace WebStoreAPP.BLL.PorukaService
 
         public async Task<IEnumerable<Poruka>> DajPorukeZaProizvod(int proizvodId)
         {
-            var porukeProizvoda = await _ctx.Poruke.Where(x => x.proizvodId == proizvodId && x.Status == StatusPoruke.AKTIVNA).ToListAsync();
+            var porukeProizvoda = await _ctx.Poruke.Include(i => i.User).Where(x => x.proizvodId == proizvodId && x.Status == StatusPoruke.AKTIVNA).ToListAsync();
             return porukeProizvoda;
         }
 
-        public async Task<IEnumerable<Poruka>> SnimiPorukuZaProizvod(Poruka poruka)
+        public async Task<IEnumerable<Poruka>> SnimiPorukuZaProizvod(Poruka poruka, string userName)
         {
+            var korisnik = await _ctx.Users.FirstOrDefaultAsync(x => x.Username == userName);
+
+
             poruka.Status = StatusPoruke.AKTIVNA;
+            poruka.ApplicationUserID = korisnik.Id;
+            poruka.DatumObjave = DateTime.Now;
 
             _ctx.Poruke.Add(poruka);
 

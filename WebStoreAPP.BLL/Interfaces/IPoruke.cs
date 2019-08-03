@@ -9,7 +9,7 @@ namespace WebStoreAPP.BLL.Interfaces
     public interface IPoruke
     {
         Task<IEnumerable<Poruka>> DajPorukeZaProizvod(int proizvodId);
-        Task<IEnumerable<Poruka>> SnimiPorukuZaProizvod(Poruka poruka);
+        Task<IEnumerable<Poruka>> SnimiPorukuZaProizvod(Poruka poruka, string userName);
         Task<IEnumerable<Poruka>> ObrisiPoruku(int porukaId);
     }
 }

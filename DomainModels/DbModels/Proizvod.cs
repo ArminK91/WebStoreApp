@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using WebStoreAPP.Common.Enumi;
 
 namespace DomainModels.DbModels
 {
@@ -23,9 +24,11 @@ namespace DomainModels.DbModels
 
         public decimal Price { get; set; }
       
-        public bool Status { get; set; }
+        public StatusSloga Status { get; set; }
 
         public int CategoryId { get; set; }
+
+        public StatusProizvoda StatusProizvoda { get; set; }
 
         public int UsrId { get; set; }
 

@@ -16,5 +16,7 @@ namespace WebStoreAPP.BLL.Interfaces
         Task<List<Proizvod>> SearchProductsByCategoryAsync(int categoryId, string username);
         Task<List<Proizvod>> SerachProductsByPriceRangeAsync(decimal lowerBoundary, decimal higherBoundary, string username);
         Task DeleteProduct(int productId, string user);
+        Task<IEnumerable<Proizvod>> OkoncajProizvod(int productId, string user);
+
     }
 }

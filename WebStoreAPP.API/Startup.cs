@@ -22,6 +22,7 @@ using WebStoreAPP.BLL.HelperService;
 using WebStoreAPP.BLL.IdentityService;
 using WebStoreAPP.BLL.ImageService;
 using WebStoreAPP.BLL.Interfaces;
+using WebStoreAPP.BLL.PorukaService;
 using WebStoreAPP.BLL.ProductService;
 
 namespace WebStoreApp.API
@@ -83,6 +84,8 @@ namespace WebStoreApp.API
             services.AddTransient<ICategory, CategoryService>();
             services.AddTransient<IHelper, HelperService>();
             services.AddTransient<IImage, ImageService>();
+            services.AddTransient<IPoruke, PorukaService>();
+
             services.AddSingleton<IPathProvider, PathProvider>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
