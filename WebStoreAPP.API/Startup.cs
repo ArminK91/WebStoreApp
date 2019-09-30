@@ -42,18 +42,9 @@ namespace WebStoreApp.API
 
             services.AddCors();
 
-            //services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-            //    {
-            //        options.User.RequireUniqueEmail = false;
-            //    }).AddDefaultTokenProviders();
-
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
-
-            //services.AddIdentity<ApplicationUser, IdentityRole>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            //    .AddDefaultTokenProviders();
 
             services.AddMvc();
             services.AddAutoMapper();
@@ -61,7 +52,7 @@ namespace WebStoreApp.API
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
-            // configure jwt authentication
+            // konfiguracija jwt autentifikacije
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -85,7 +76,6 @@ namespace WebStoreApp.API
             services.AddTransient<IHelper, HelperService>();
             services.AddTransient<IImage, ImageService>();
             services.AddTransient<IPoruke, PorukaService>();
-
             services.AddSingleton<IPathProvider, PathProvider>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }

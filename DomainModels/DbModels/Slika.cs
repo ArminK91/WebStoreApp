@@ -14,6 +14,5 @@ namespace DomainModels.DbModels
         public string PublicId { get; set; }
         public Proizvod Proizvod { get; set; }
         public int ProizvodId { get; set; }
-
     }
 }

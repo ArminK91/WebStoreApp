@@ -17,28 +17,7 @@ namespace WebStoreApp.API
     {
         public static void Main(string[] args)
         {
-            //var host = BuildWebHost(args);
-
             BuildWebHost(args).Run();
-
-            //using (var scope = host.Services.CreateScope())
-            //{
-            //    var services = scope.ServiceProvider;
-            //    try
-            //    {
-            //        var context = services.GetRequiredService<ApplicationDbContext>();
-            //        Seed.Seed1(context);//<---Do your seeding here
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        throw ex;
-            //        //var logger = services.GetRequiredService<ILogger<Program>>();
-            //        //logger.LogError(ex, "An error occurred while seeding the database.");
-            //    }
-            //}
-
-            //host.Run();
-
         }
 
         public static IWebHost BuildWebHost(string[] args) =>

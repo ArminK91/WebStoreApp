@@ -18,14 +18,12 @@ namespace WebStoreAPP.BLL.ProductService
         {
             _ctx = (ApplicationDbContext)serviceProvider.GetService(typeof(ApplicationDbContext));            
         }
-
         public async Task DeleteProduct(int productId, string userName)
         {
             if (userName == null)
                 throw new Exception("Nemoguce obrisati proizvod!");
 
-            var user = await GetUserByUserName(userName);
-
+           var user = await GetUserByUserName(userName);
 
            var productForDelete = _ctx.Proizvodi
                .Include(i => i.Slike)
@@ -43,12 +41,8 @@ namespace WebStoreAPP.BLL.ProductService
             _ctx.Entry(productForDelete).State = EntityState.Modified;
             _ctx.Entry(auto).State = EntityState.Modified;
 
-
-
             await _ctx.SaveChangesAsync();
-
         }
-
         public async Task<IEnumerable<Proizvod>> OkoncajProizvod(int productId, string user)
         {
             var proizvod = await _ctx.Proizvodi.FirstOrDefaultAsync(x => x.Id == productId);
@@ -74,12 +68,12 @@ namespace WebStoreAPP.BLL.ProductService
                                                   .Include(i => i.Slike)
                                                   .Where(x => x.UsrId == user.Id && x.Status == StatusSloga.AKTIVAN)
                                                   .ToListAsync();
-
             return sviProizvodiKorisnika;
         }
 
         public async Task<IEnumerable<Proizvod>> GetAllProducts(string userName)
         {
+            var user = await _ctx.Users.FirstOrDefaultAsync(c => c.Username == userName);
             var sviProizvodi = 
                                 await _ctx.Proizvodi
                                           .Include(i => i.Auto)
@@ -87,15 +81,11 @@ namespace WebStoreAPP.BLL.ProductService
                                           .Include(i => i.User)
                                           .Where(x => x.Status == StatusSloga.AKTIVAN && x.StatusProizvoda == StatusProizvoda.AKTIVAN)
                                           .ToListAsync();
-
             return sviProizvodi;
         }
 
         public async Task<Proizvod> GetProductById(int productId, string userName)
         {
-            if (productId == null)
-                throw new Exception("Nemoguce dohvatiti proizvod.");
-
             var prozivod = await _ctx.Proizvodi
                 .Include(i => i.Auto)
                 .Include(i => i.Slike)
@@ -119,7 +109,6 @@ namespace WebStoreAPP.BLL.ProductService
             return user;
         }
 
-
         public async Task<Proizvod> SaveProduct(Proizvod product, string userName)
         {
             if (product == null || userName == null)
@@ -129,6 +118,8 @@ namespace WebStoreAPP.BLL.ProductService
 
             product.UsrId = user.Id;
             product.Status = StatusSloga.AKTIVAN;
+            product.Objavio = userName;
+            product.StatusProizvoda = StatusProizvoda.AKTIVAN;
             product.DatumObjave = DateTime.Now;
 
             _ctx.Proizvodi.Add(product);
@@ -198,12 +189,9 @@ namespace WebStoreAPP.BLL.ProductService
 
             _ctx.Entry(product).State = EntityState.Modified;
 
-
             await _ctx.SaveChangesAsync();
 
             return product;
         }
-
-   
     }
 }

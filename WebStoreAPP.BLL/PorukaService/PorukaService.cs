@@ -14,7 +14,6 @@ namespace WebStoreAPP.BLL.PorukaService
 {
     public class PorukaService : IPoruke
     {
-
         readonly ApplicationDbContext _ctx;
 
         public PorukaService(IServiceProvider serviceProvider)
@@ -22,17 +21,14 @@ namespace WebStoreAPP.BLL.PorukaService
             _ctx = (ApplicationDbContext)serviceProvider.GetService(typeof(ApplicationDbContext));
         }
 
-
         public async Task<IEnumerable<Poruka>> DajPorukeZaProizvod(int proizvodId)
         {
             var porukeProizvoda = await _ctx.Poruke.Include(i => i.User).Where(x => x.proizvodId == proizvodId && x.Status == StatusPoruke.AKTIVNA).ToListAsync();
             return porukeProizvoda;
         }
-
         public async Task<IEnumerable<Poruka>> SnimiPorukuZaProizvod(Poruka poruka, string userName)
         {
             var korisnik = await _ctx.Users.FirstOrDefaultAsync(x => x.Username == userName);
-
 
             poruka.Status = StatusPoruke.AKTIVNA;
             poruka.ApplicationUserID = korisnik.Id;
@@ -46,8 +42,6 @@ namespace WebStoreAPP.BLL.PorukaService
 
             return poruke;
         }
-
-    
         public async Task<IEnumerable<Poruka>> ObrisiPoruku(int porukaId)
         {
             var poruka = await _ctx.Poruke.FirstOrDefaultAsync(c => c.Id == porukaId);
@@ -63,7 +57,5 @@ namespace WebStoreAPP.BLL.PorukaService
 
             return await DajPorukeZaProizvod(poruka.proizvodId);
         }
-        
-
     }
 }

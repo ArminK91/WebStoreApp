@@ -17,7 +17,6 @@ namespace WebStoreAPP.Common.Mappers
             Description = productViewModel.Opis,
             Price = productViewModel.Cijena,
             Auto = productViewModel.Auto == null ? null : productViewModel.Auto.ToModel()
-            //Slike = productViewModel.Slike.Count == 0 ? null : productViewModel.Slike.ToM
         };
 
         public static ProductViewModel ToViewModel(this Proizvod product) => new ProductViewModel()
@@ -32,6 +31,7 @@ namespace WebStoreAPP.Common.Mappers
             Status = product.Status,
             StatusProizvoda = product.StatusProizvoda,
             Opis = product.Description,
+            Objavio = product.Objavio,
             slikaUrl = product.Slike.Count == 0 ? null : product.Slike.FirstOrDefault().Url,
             Auto = product.Auto == null ? null : product.Auto.ToViewModel(),
             Slike = product.Slike == null ? null : product.Slike.Select(c => c.ToViewModel()),
@@ -46,7 +46,6 @@ namespace WebStoreAPP.Common.Mappers
             PublicId = slika.PublicId,
             DatumDodavanja = slika.DatumDodavanja,
             Opis = slika.Opis
-
         };
     }
 }

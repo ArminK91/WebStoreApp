@@ -34,8 +34,6 @@ namespace WebStoreAPP.API.Controllers
             _appSettings = appSettings.Value;
         }
 
-        
-
         [AllowAnonymous]
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody]UserViewModel userDto)
@@ -70,7 +68,6 @@ namespace WebStoreAPP.API.Controllers
             });
         }
 
-        
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> RegisterAsync([FromBody]UserViewModel userDto)
@@ -108,19 +105,16 @@ namespace WebStoreAPP.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody]UserViewModel userDto)
         {
-            // map dto to entity and set id
             var user = _mapper.Map<ApplicationUser>(userDto);
             user.Id = id;
 
             try
             {
-                // save 
                 _identityService.Update(user, userDto.Password);
                 return Ok();
             }
             catch (Exception ex)
             {
-                // return error message if there was an exception
                 return BadRequest(ex.Message);
             }
         }

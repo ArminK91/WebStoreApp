@@ -21,8 +21,6 @@ namespace WebStoreApp.API.Helpers
 
             CreateMap<SlikaDetaljiDto, Slika>();
             CreateMap<Slika, SlikaDetaljiDto>();
-
-
         }
     }
 }

@@ -13,37 +13,32 @@ namespace DomainModels.Context
 {
     public class ApplicationDbContext : DbContext
     {
-         private IConfigurationRoot _configuration { get; }
-         private readonly IHttpContextAccessor _httpContextAccessor;
+        private IConfigurationRoot _configuration { get; }
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-         public ApplicationDbContext()
-         {
-
-         }
-        public ApplicationDbContext(IConfiguration configuration, DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
+        public ApplicationDbContext()
         {
-            _configuration = (IConfigurationRoot)configuration;
+
+        }
+
+        public ApplicationDbContext(IConfiguration configuration, DbContextOptions<ApplicationDbContext> options,
+            IHttpContextAccessor httpContextAccessor) : base(options)
+        {
+            _configuration = (IConfigurationRoot) configuration;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
             //ConnectionStrings:DefaultConnection
-            optionsBuilder.UseSqlServer(_configuration["ConnectionStrings:DefaultConnection"], b => b.MigrationsAssembly("DomainModels"));
+            optionsBuilder.UseSqlServer(_configuration["ConnectionStrings:DefaultConnection"],
+                b => b.MigrationsAssembly("DomainModels"));
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-
-
-
-            //builder.Entity<IdentityRole>().ToTable("Roles", "dbo");
-            //builder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims", "dbo");
-            //builder.Entity<IdentityUserClaim<string>>().ToTable("UserClaims", "dbo");
-            //builder.Entity<IdentityUserLogin<string>>().ToTable("UserLogins", "dbo");
-            //builder.Entity<IdentityUserRole<string>>().ToTable("UserRoles", "dbo");
             builder.Entity<ApplicationUser>().ToTable("Users", "dbo");
 
             //builder.Entity<ApplicationUser>().ToTable("Users", "dbo");
@@ -56,11 +51,7 @@ namespace DomainModels.Context
             builder.Entity<Poruka>().ToTable("Poruke", "dbo");
             builder.Entity<Sifarnik>().ToTable("Sifarnik", "dbo");
 
-
             builder.Entity<ProductImages>();
-
-
-           
 
             builder.Entity<ProductImages>()
                 .HasOne(bc => bc.Image)
@@ -72,17 +63,11 @@ namespace DomainModels.Context
         public DbSet<Proizvod> Proizvodi { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Slika> Slike { get; set; }
-
         public DbSet<ProductImages> ProductsImages { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Automobil> Automobili { get; set; }
         public DbSet<Sifarnik> Sifarnik { get; set; }
         public DbSet<Poruka> Poruke { get; set; }
-
-
     }
-
-
-
 }

@@ -23,15 +23,15 @@ namespace WebStoreAPP.BLL.IdentityService
 
             var user = _ctx.Users.SingleOrDefault(x => x.Username == username);
 
-            // check if username exists
+            // provjeri da li username postoji
             if (user == null)
                 return null;
 
-            // check if password is correct
+            // provjera da li je password uredu
             if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 return null;
 
-            // authentication successful
+            // autentifikacija uspješna
             return user;
         }
 
@@ -47,7 +47,7 @@ namespace WebStoreAPP.BLL.IdentityService
 
         public ApplicationUser Create(ApplicationUser user, string password)
         {
-            // validation
+            // validacija
             if (string.IsNullOrWhiteSpace(password))
                 throw new Exception("Password is required");
 
@@ -75,17 +75,14 @@ namespace WebStoreAPP.BLL.IdentityService
 
             if (userParam.Username != user.Username)
             {
-                // username has changed so check if the new username is already taken
                 if (_ctx.Users.Any(x => x.Username == userParam.Username))
                     throw new Exception("Username " + userParam.Username + " is already taken");
             }
 
-            // update user properties
             user.FirstName = userParam.FirstName;
             user.LastName = userParam.LastName;
             user.Username = userParam.Username;
 
-            // update password if it was entered
             if (!string.IsNullOrWhiteSpace(password))
             {
                 byte[] passwordHash, passwordSalt;
@@ -109,8 +106,6 @@ namespace WebStoreAPP.BLL.IdentityService
             }
         }
 
-        // private helper methods
-
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             if (password == null) throw new ArgumentNullException("password");
@@ -126,9 +121,9 @@ namespace WebStoreAPP.BLL.IdentityService
         private static bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
         {
             if (password == null) throw new ArgumentNullException("password");
-            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
-            if (storedHash.Length != 64) throw new ArgumentException("Invalid length of password hash (64 bytes expected).", "passwordHash");
-            if (storedSalt.Length != 128) throw new ArgumentException("Invalid length of password salt (128 bytes expected).", "passwordHash");
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Vrijednost ne moze biti prazna.", "password");
+            if (storedHash.Length != 64) throw new ArgumentException("Neispravna dužina.", "passwordHash");
+            if (storedSalt.Length != 128) throw new ArgumentException("Neispravna dužina.", "passwordHash");
 
             using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
             {

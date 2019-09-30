@@ -85,13 +85,7 @@ namespace WebStoreApp.API.Controllers
 
             var slikaDb = _mapper.Map<Slika>(slika);
 
-            //if (proizvod.Slike != null || proizvod.Slike.Count == 0)
-            //{
-            //    slikaDb.Glavna = true;
-            //}
-
             proizvod.Slike.Add(slikaDb);
-
 
             var prod = await _productService.UpdateProduct(proizvod, User.Identity.Name);
 
@@ -108,8 +102,6 @@ namespace WebStoreApp.API.Controllers
         [HttpPost("{proizvodId}/postaviglavnu/{id}")]
         public async Task<IActionResult> PostaviZaGlavnu(int proizvodId, int id)
         {
-
-
             var product = await _productService.GetProductById(proizvodId, User.Identity.Name);
 
             if (!product.Slike.Any(p => p.Id == id))
@@ -135,7 +127,6 @@ namespace WebStoreApp.API.Controllers
 
             return Ok(_mapper.Map<List<SlikaDetaljiDto>>(slike));
         }
-
     }
 
 }
